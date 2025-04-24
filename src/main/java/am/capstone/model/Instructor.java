@@ -1,14 +1,14 @@
 package am.capstone.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
+@Data
 public class Instructor {
 
     @Id
