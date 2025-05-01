@@ -361,20 +361,39 @@ paths:
 
 components:
   schemas:
+    securitySchemes:
+      BasicAuth:
+        type: http
+        scheme: basic
+      JwtAuthToken:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
     Instructor:
       type: object
+      required:
+        - firstName
+        - lastName
+        - email
       properties:
         firstName:
           type: string
+          minLength: 2
         lastName:
           type: string
+          minLength: 2
         email:
           type: string
+          format: email
         phone:
           type: string
 
     Course:
       type: object
+      required:
+        - name
+        - credits
+        - capacity
       properties:
         name:
           type: string
@@ -382,11 +401,17 @@ components:
           type: string
         credits:
           type: integer
+          minimum: 1
         capacity:
           type: integer
+          minimum: 1
 
     Student:
       type: object
+      required:
+        - firstName
+        - lastName
+        - email
       properties:
         firstName:
           type: string
@@ -394,13 +419,19 @@ components:
           type: string
         email:
           type: string
+          format: email
         phone:
           type: string
         credits:
           type: integer
+          default: 0
 
     Faculty:
       type: object
+      required:
+        - firstName
+        - lastName
+        - email
       properties:
         firstName:
           type: string
@@ -408,11 +439,16 @@ components:
           type: string
         email:
           type: string
+          format: email
         phone:
           type: string
 
     Administrator:
       type: object
+      required:
+        - firstName
+        - lastName
+        - email
       properties:
         firstName:
           type: string
@@ -420,5 +456,6 @@ components:
           type: string
         email:
           type: string
+          format: email
         phone:
           type: string
