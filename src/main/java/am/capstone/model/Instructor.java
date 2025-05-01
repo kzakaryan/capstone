@@ -1,6 +1,7 @@
 package am.capstone.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Instructor {
     private String lastName;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
