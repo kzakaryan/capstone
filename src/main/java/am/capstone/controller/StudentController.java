@@ -2,6 +2,7 @@ package am.capstone.controller;
 
 import am.capstone.model.Student;
 import am.capstone.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> create(@RequestBody Student student) {
+    public ResponseEntity<Student> create(@Valid @RequestBody Student student) {
         return ResponseEntity.ok(service.registerStudent(student));
     }
 
@@ -33,7 +34,7 @@ public class StudentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> update(@PathVariable Long id, @RequestBody Student student) {
+    public ResponseEntity<Student> update(@PathVariable Long id, @Valid @RequestBody Student student) {
         return ResponseEntity.ok(service.updateStudent(id, student));
     }
 

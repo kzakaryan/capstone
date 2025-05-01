@@ -2,6 +2,7 @@ package am.capstone.controller;
 
 import am.capstone.model.Course;
 import am.capstone.service.CourseService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> create(@RequestBody Course course) {
+    public ResponseEntity<Course> create(@Valid @RequestBody Course course) {
         return ResponseEntity.ok(service.createCourse(course));
     }
 
@@ -33,7 +34,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody Course course) {
+    public ResponseEntity<Course> update(@PathVariable Long id, @Valid @RequestBody Course course) {
         return ResponseEntity.ok(service.updateCourse(id, course));
     }
 
