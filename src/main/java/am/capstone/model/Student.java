@@ -1,5 +1,6 @@
 package am.capstone.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,16 +15,34 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotBlank
     private Long studentId;
 
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
+    @NotBlank
     private String email;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String phone;
+
+    @NotBlank
     private String address;
+
+    @NotBlank
     private String city;
+
+    @NotBlank
     private String state;
+
+    @NotBlank
     private String zip;
 
     @ManyToMany
@@ -34,6 +53,7 @@ public class Student {
     )
     private Set<Course> coursesEnrolled = new HashSet<>();
 
+    @NotBlank
     private int credits;
 
 }
