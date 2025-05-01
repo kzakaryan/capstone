@@ -18,10 +18,46 @@ paths:
     get:
       tags:
         - Instructors
-      summary: Get all instructors
+      summary: Get all instructors with pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          description: Page number (0-based)
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Number of records per page
       responses:
         '200':
-          description: List of instructors
+          description: Paginated list of instructors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instructor'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
     post:
       tags:
         - Instructors
@@ -87,10 +123,63 @@ paths:
     get:
       tags:
         - Courses
-      summary: Get all courses
+      summary: Get all courses with filtering, sorting, and pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by course name
+        - name: minCredits
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: maxCredits
+          in: query
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
-          description: List of courses
+          description: Paginated and filtered list of courses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Course'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
     post:
       tags:
         - Courses
@@ -156,10 +245,76 @@ paths:
     get:
       tags:
         - Students
-      summary: Get all students
+      summary: Get all students with filtering, sorting, and pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          description: Page number (0-based)
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Number of records per page
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Comma-separated list of sorting fields, e.g., "credits,asc"
+        - name: firstName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter students by first name (exact match)
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter students whose email contains this value
+        - name: minCredits
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter students with credits greater than or equal to this value
+        - name: maxCredits
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter students with credits less than or equal to this value
       responses:
         '200':
-          description: List of students
+          description: Paginated and filtered list of students
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Student'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
     post:
       tags:
         - Students
@@ -225,10 +380,42 @@ paths:
     get:
       tags:
         - Faculties
-      summary: Get all faculties
+      summary: Get all faculties with pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
-          description: List of faculties
+          description: Paginated list of faculties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Faculty'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
     post:
       tags:
         - Faculties
@@ -294,10 +481,42 @@ paths:
     get:
       tags:
         - Administrators
-      summary: Get all administrators
+      summary: Get all administrators with pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
-          description: List of administrators
+          description: Paginated list of administrators
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Administrator'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
     post:
       tags:
         - Administrators
