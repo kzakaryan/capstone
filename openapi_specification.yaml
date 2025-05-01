@@ -1,0 +1,424 @@
+openapi: 3.1.0
+info:
+  title: University Management System
+  description: OpenAPI specification for Instructor, Course, Student, Faculty, and Administrator CRUD APIs
+  contact:
+    name: Khachik Z.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8080
+security:
+  - BasicAuth: []
+  - JwtAuthToken: []
+paths:
+  /api/instructors:
+    get:
+      tags:
+        - Instructors
+      summary: Get all instructors
+      responses:
+        '200':
+          description: List of instructors
+    post:
+      tags:
+        - Instructors
+      summary: Create an instructor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Instructor'
+      responses:
+        '200':
+          description: Instructor created
+
+  /api/instructors/{id}:
+    get:
+      tags:
+        - Instructors
+      summary: Get instructor by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Instructor found
+    put:
+      tags:
+        - Instructors
+      summary: Update instructor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Instructor'
+      responses:
+        '200':
+          description: Instructor updated
+    delete:
+      tags:
+        - Instructors
+      summary: Delete instructor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Instructor deleted
+
+  /api/courses:
+    get:
+      tags:
+        - Courses
+      summary: Get all courses
+      responses:
+        '200':
+          description: List of courses
+    post:
+      tags:
+        - Courses
+      summary: Create a course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Course created
+
+  /api/courses/{id}:
+    get:
+      tags:
+        - Courses
+      summary: Get course by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Course found
+    put:
+      tags:
+        - Courses
+      summary: Update course
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Course updated
+    delete:
+      tags:
+        - Courses
+      summary: Delete course
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Course deleted
+
+  /api/students:
+    get:
+      tags:
+        - Students
+      summary: Get all students
+      responses:
+        '200':
+          description: List of students
+    post:
+      tags:
+        - Students
+      summary: Register a student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Student registered
+
+  /api/students/{id}:
+    get:
+      tags:
+        - Students
+      summary: Get student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student found
+    put:
+      tags:
+        - Students
+      summary: Update student
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Student updated
+    delete:
+      tags:
+        - Students
+      summary: Delete student
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Student deleted
+
+  /api/faculties:
+    get:
+      tags:
+        - Faculties
+      summary: Get all faculties
+      responses:
+        '200':
+          description: List of faculties
+    post:
+      tags:
+        - Faculties
+      summary: Create a faculty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        '200':
+          description: Faculty created
+
+  /api/faculties/{id}:
+    get:
+      tags:
+        - Faculties
+      summary: Get faculty by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Faculty found
+    put:
+      tags:
+        - Faculties
+      summary: Update faculty
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        '200':
+          description: Faculty updated
+    delete:
+      tags:
+        - Faculties
+      summary: Delete faculty
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Faculty deleted
+
+  /api/administrators:
+    get:
+      tags:
+        - Administrators
+      summary: Get all administrators
+      responses:
+        '200':
+          description: List of administrators
+    post:
+      tags:
+        - Administrators
+      summary: Create an administrator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrator'
+      responses:
+        '200':
+          description: Administrator created
+
+  /api/administrators/{id}:
+    get:
+      tags:
+        - Administrators
+      summary: Get administrator by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Administrator found
+    put:
+      tags:
+        - Administrators
+      summary: Update administrator
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrator'
+      responses:
+        '200':
+          description: Administrator updated
+    delete:
+      tags:
+        - Administrators
+      summary: Delete administrator
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Administrator deleted
+
+components:
+  schemas:
+    Instructor:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+
+    Course:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        credits:
+          type: integer
+        capacity:
+          type: integer
+
+    Student:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        credits:
+          type: integer
+
+    Faculty:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+
+    Administrator:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
