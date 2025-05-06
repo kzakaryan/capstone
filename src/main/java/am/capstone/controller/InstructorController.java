@@ -4,13 +4,12 @@ import am.capstone.model.Instructor;
 import am.capstone.service.InstructorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/instructors")
+@RestController
+@RequestMapping("/instructors")
 public class InstructorController {
     private final InstructorService service;
 

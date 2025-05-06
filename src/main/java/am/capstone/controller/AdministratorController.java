@@ -4,13 +4,12 @@ import am.capstone.model.Administrator;
 import am.capstone.service.AdministratorService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/administrators")
+@RestController
+@RequestMapping("/administrators")
 public class AdministratorController {
     private final AdministratorService service;
 

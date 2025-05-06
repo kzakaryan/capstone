@@ -4,13 +4,12 @@ import am.capstone.model.Course;
 import am.capstone.service.CourseService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/courses")
+@RestController
+@RequestMapping("/courses")
 public class CourseController {
     private final CourseService service;
 

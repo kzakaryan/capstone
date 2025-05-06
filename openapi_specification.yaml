@@ -14,7 +14,7 @@ security:
   - BasicAuth: []
   - JwtAuthToken: []
 paths:
-  /api/instructors:
+  /instructors:
     get:
       tags:
         - Instructors
@@ -36,7 +36,7 @@ paths:
         '200':
           description: Instructor created
 
-  /api/instructors/{id}:
+  /instructors/{id}:
     get:
       tags:
         - Instructors
@@ -83,7 +83,7 @@ paths:
         '204':
           description: Instructor deleted
 
-  /api/courses:
+  /courses:
     get:
       tags:
         - Courses
@@ -105,7 +105,7 @@ paths:
         '200':
           description: Course created
 
-  /api/courses/{id}:
+  /courses/{id}:
     get:
       tags:
         - Courses
@@ -152,7 +152,7 @@ paths:
         '204':
           description: Course deleted
 
-  /api/students:
+  /students:
     get:
       tags:
         - Students
@@ -174,7 +174,7 @@ paths:
         '200':
           description: Student registered
 
-  /api/students/{id}:
+  /students/{id}:
     get:
       tags:
         - Students
@@ -221,7 +221,7 @@ paths:
         '204':
           description: Student deleted
 
-  /api/faculties:
+  /faculties:
     get:
       tags:
         - Faculties
@@ -243,7 +243,7 @@ paths:
         '200':
           description: Faculty created
 
-  /api/faculties/{id}:
+  /faculties/{id}:
     get:
       tags:
         - Faculties
@@ -290,7 +290,7 @@ paths:
         '204':
           description: Faculty deleted
 
-  /api/administrators:
+  /administrators:
     get:
       tags:
         - Administrators
@@ -312,7 +312,7 @@ paths:
         '200':
           description: Administrator created
 
-  /api/administrators/{id}:
+  /administrators/{id}:
     get:
       tags:
         - Administrators

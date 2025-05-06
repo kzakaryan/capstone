@@ -4,13 +4,12 @@ import am.capstone.model.Faculty;
 import am.capstone.service.FacultyService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/faculties")
+@RestController
+@RequestMapping("/faculties")
 public class FacultyController {
     private final FacultyService service;
 
