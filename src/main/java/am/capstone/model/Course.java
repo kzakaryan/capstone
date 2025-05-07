@@ -16,7 +16,6 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotBlank
     private Long courseId;
 
     @NotBlank

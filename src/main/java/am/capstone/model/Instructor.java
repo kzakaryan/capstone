@@ -1,5 +1,8 @@
 package am.capstone.model;
 
+import am.capstone.model.enums.State;
+import am.capstone.model.validators.annotations.PasswordConstraint;
+import am.capstone.model.validators.annotations.StateConstraint;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +19,6 @@ public class Instructor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotBlank
     private Long instructorId;
 
     @NotBlank
@@ -29,7 +31,7 @@ public class Instructor {
     @Email
     private String email;
 
-    @NotBlank
+    @PasswordConstraint
     private String password;
 
     @NotBlank
@@ -41,7 +43,7 @@ public class Instructor {
     @NotBlank
     private String city;
 
-    @NotBlank
+    @StateConstraint(enumClass = State.class)
     private String state;
 
     @NotBlank
