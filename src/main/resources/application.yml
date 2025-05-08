@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+students:
+  api:
+    url: http://courses-service:8081
+
+courses:
+  api:
+    url: http://courses-service:8082
