@@ -1,28 +1,38 @@
 package am.capstone.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long courseId;
 
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "instructor_id")
+    @NotBlank
     private Instructor instructor;
+
+    @NotBlank
     private int credits;
+
+    @NotBlank
     private int capacity;
 
     @ManyToMany

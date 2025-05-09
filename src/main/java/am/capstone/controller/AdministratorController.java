@@ -2,14 +2,14 @@ package am.capstone.controller;
 
 import am.capstone.model.Administrator;
 import am.capstone.service.AdministratorService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/administrators")
+@RestController
+@RequestMapping("/administrators")
 public class AdministratorController {
     private final AdministratorService service;
 
@@ -18,7 +18,7 @@ public class AdministratorController {
     }
 
     @PostMapping
-    public ResponseEntity<Administrator> create(@RequestBody Administrator administrator) {
+    public ResponseEntity<Administrator> create(@Valid @RequestBody Administrator administrator) {
         return ResponseEntity.ok(service.createAdministrator(administrator));
     }
 
@@ -33,7 +33,7 @@ public class AdministratorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Administrator> update(@PathVariable Long id, @RequestBody Administrator administrator) {
+    public ResponseEntity<Administrator> update(@PathVariable Long id, @Valid @RequestBody Administrator administrator) {
         return ResponseEntity.ok(service.updateAdministrator(id, administrator));
     }
 

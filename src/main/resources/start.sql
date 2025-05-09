@@ -7,7 +7,7 @@ CREATE TABLE administrator (
     phone VARCHAR(50),
     address VARCHAR(255),
     city VARCHAR(100),
-    state VARCHAR(100),
+    state state NOT NULL,
     zip VARCHAR(20)
 );
 
@@ -20,7 +20,7 @@ CREATE TABLE faculty (
     phone VARCHAR(50),
     address VARCHAR(255),
     city VARCHAR(100),
-    state VARCHAR(100),
+    state state NOT NULL,
     zip VARCHAR(20)
 );
 
@@ -33,7 +33,7 @@ CREATE TABLE instructor (
     phone VARCHAR(50),
     address VARCHAR(255),
     city VARCHAR(100),
-    state VARCHAR(100),
+    state state NOT NULL,
     zip VARCHAR(20)
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE student (
     phone VARCHAR(50),
     address VARCHAR(255),
     city VARCHAR(100),
-    state VARCHAR(100),
+    state state NOT NULL,
     zip VARCHAR(20),
     credits INT DEFAULT 0
 );
@@ -67,4 +67,12 @@ CREATE TABLE course_student (
     PRIMARY KEY (course_id, student_id),
     CONSTRAINT fk_course FOREIGN KEY (course_id) REFERENCES course (course_id) ON DELETE CASCADE,
     CONSTRAINT fk_student FOREIGN KEY (student_id) REFERENCES student (student_id) ON DELETE CASCADE
+);
+
+CREATE TYPE state AS ENUM (
+    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+    'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+    'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+    'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+    'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
 );

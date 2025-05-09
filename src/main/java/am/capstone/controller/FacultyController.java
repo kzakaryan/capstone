@@ -2,14 +2,14 @@ package am.capstone.controller;
 
 import am.capstone.model.Faculty;
 import am.capstone.service.FacultyService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/faculties")
+@RestController
+@RequestMapping("/faculties")
 public class FacultyController {
     private final FacultyService service;
 
@@ -18,7 +18,7 @@ public class FacultyController {
     }
 
     @PostMapping
-    public ResponseEntity<Faculty> create(@RequestBody Faculty faculty) {
+    public ResponseEntity<Faculty> create(@Valid @RequestBody Faculty faculty) {
         return ResponseEntity.ok(service.createFaculty(faculty));
     }
 
@@ -33,7 +33,7 @@ public class FacultyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Faculty> update(@PathVariable Long id, @RequestBody Faculty faculty) {
+    public ResponseEntity<Faculty> update(@PathVariable Long id, @Valid @RequestBody Faculty faculty) {
         return ResponseEntity.ok(service.updateFaculty(id, faculty));
     }
 

@@ -1,29 +1,50 @@
 package am.capstone.model;
+import am.capstone.model.enums.State;
+import am.capstone.model.validators.annotations.PasswordConstraint;
+import am.capstone.model.validators.annotations.StateConstraint;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Entity
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long studentId;
 
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
+    @Email
     private String email;
+
+    @PasswordConstraint
     private String password;
+
+    @NotBlank
     private String phone;
+
+    @NotBlank
     private String address;
+
+    @NotBlank
     private String city;
+
+    @StateConstraint(enumClass = State.class)
     private String state;
+
+    @NotBlank
     private String zip;
 
     @ManyToMany
@@ -34,6 +55,7 @@ public class Student {
     )
     private Set<Course> coursesEnrolled = new HashSet<>();
 
+    @NotBlank
     private int credits;
 
 }
