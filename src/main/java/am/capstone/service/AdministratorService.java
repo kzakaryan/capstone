@@ -3,6 +3,8 @@ package am.capstone.service;
 import am.capstone.model.Administrator;
 import am.capstone.repository.AdministratorRepository;
 import am.capstone.service.exceptions.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -23,8 +25,8 @@ public class AdministratorService {
                 .orElseThrow(() -> new EntityNotFoundException("Administrator not found with ID: " + id));
     }
 
-    public List<Administrator> getAllAdministrators() {
-        return administratorRepository.findAll();
+    public Page<Administrator> getAllAdministrators(Pageable pageable) {
+        return administratorRepository.findAll(pageable);
     }
 
     public Administrator updateAdministrator(Long id, Administrator updatedAdministrator) {

@@ -5,6 +5,9 @@ import am.capstone.model.Instructor;
 import am.capstone.repository.CourseRepository;
 import am.capstone.repository.InstructorRepository;
 import am.capstone.service.exceptions.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -27,8 +30,8 @@ public class InstructorService {
                 .orElseThrow(() -> new EntityNotFoundException("Instructor not found with ID: " + id));
     }
 
-    public List<Instructor> getAllInstructors() {
-        return instructorRepository.findAll();
+    public Page<Instructor> getAllInstructors(Pageable pageable) {
+        return instructorRepository.findAll(pageable);
     }
 
     public Instructor updateInstructor(Long id, Instructor updatedInstructor) {

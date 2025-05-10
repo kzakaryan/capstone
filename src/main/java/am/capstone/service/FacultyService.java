@@ -3,7 +3,10 @@ package am.capstone.service;
 import am.capstone.model.Faculty;
 import am.capstone.repository.FacultyRepository;
 import am.capstone.service.exceptions.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -23,8 +26,8 @@ public class FacultyService {
                 .orElseThrow(() -> new EntityNotFoundException("Faculty not found with ID: " + id));
     }
 
-    public List<Faculty> getAllFaculties() {
-        return facultyRepository.findAll();
+    public Page<Faculty> getAllFaculties(Pageable pageable) {
+        return facultyRepository.findAll(pageable);
     }
 
     public Faculty updateFaculty(Long id, Faculty updatedFaculty) {

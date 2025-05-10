@@ -5,6 +5,8 @@ import am.capstone.model.Student;
 import am.capstone.repository.CourseRepository;
 import am.capstone.repository.StudentRepository;
 import am.capstone.service.exceptions.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +31,8 @@ public class StudentService {
                 .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + id));
     }
 
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public Page<Student> getAllStudents(Pageable pageable) {
+        return studentRepository.findAll(pageable);
     }
 
     public Student updateStudent(Long id, Student updatedStudent) {

@@ -3,6 +3,10 @@ package am.capstone.controller;
 import am.capstone.model.Course;
 import am.capstone.service.CourseService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +32,14 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAll() {
-        return ResponseEntity.ok(service.getAllCourses());
+    public ResponseEntity<Page<Course>> getAllCourses(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir ) {
+
+        Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        return ResponseEntity.ok(service.getAllCourses(PageRequest.of(pageNumber, pageSize, sort)));
     }
 
     @PutMapping("/{id}")
