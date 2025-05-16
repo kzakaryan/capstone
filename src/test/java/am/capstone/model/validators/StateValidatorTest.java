@@ -37,9 +37,4 @@ class StateValidatorTest {
     void nullState() {
         assertFalse(stateValidator.isValid(null, null));
     }
-
-
-
-
-
 }

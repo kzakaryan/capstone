@@ -50,5 +50,4 @@ class PasswordValidatorTest {
     void nullPassword() {
         assertFalse(passwordValidator.isValid(null, null));
     }
-
 }
