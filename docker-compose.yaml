@@ -51,7 +51,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
       SPRING_APPLICATION_NAME: capstone
-    ports: ["8001:8000"]
+    ports: ["8001:8001"]
     command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
 
 volumes:
