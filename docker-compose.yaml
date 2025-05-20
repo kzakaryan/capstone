@@ -22,6 +22,16 @@ services:
       SPRING_PROFILES_ACTIVE: docker
     restart: always
 
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8765:8765"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+
   app:
     build: .
     container_name: my_spring_app
