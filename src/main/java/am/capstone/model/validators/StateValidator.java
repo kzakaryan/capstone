@@ -9,10 +9,6 @@ import jakarta.validation.ConstraintValidatorContext;
 public class StateValidator implements ConstraintValidator<StateConstraint, String> {
 
     @Override
-    public void initialize(StateConstraint constraintAnnotation) {
-    }
-
-    @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) return false;
         try {

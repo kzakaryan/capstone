@@ -10,10 +10,6 @@ public class PasswordValidator implements ConstraintValidator<PasswordConstraint
             "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
 
     @Override
-    public void initialize(PasswordConstraint constraintAnnotation) {
-    }
-
-    @Override
     public boolean isValid(String password, ConstraintValidatorContext ctx) {
         return password != null && password.matches(PASSWORD_PATTERN);
     }

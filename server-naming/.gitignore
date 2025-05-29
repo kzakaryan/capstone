@@ -31,8 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-mvnw
-mvnw.cmd
-.mvn
-.env
-.DS_Store

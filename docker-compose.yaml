@@ -11,6 +11,17 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/project-data
+
+  eureka-server:
+    build:
+      context: ./server-naming
+    container_name: server-naming
+    ports:
+      - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    restart: always
+
   app:
     build: .
     container_name: my_spring_app
@@ -22,8 +33,25 @@ services:
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    ports:
-      - "8080:8080"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: capstone
+    ports: ["8000:8000"]
+    command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+
+  app-instance-2:
+    build: .
+    container_name: my_spring_app_instance_2
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_APPLICATION_NAME: capstone
+    ports: ["8001:8000"]
     command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
 
 volumes:
