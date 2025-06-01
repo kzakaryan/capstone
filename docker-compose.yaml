@@ -36,7 +36,7 @@ services:
   eureka-server:
     build:
       context: ./server-naming
-    container_name: server-naming
+    container_name: eureka-server
     ports:
       - "8761:8761"
     environment:
@@ -60,6 +60,7 @@ services:
     depends_on:
       - config-server
       - eureka-server
+    command: [ "sh", "-c", "sleep 15 && java -jar app-jar" ]
     networks:
       - backend
     restart: always
