@@ -63,7 +63,6 @@ services:
     command: [ "sh", "-c", "sleep 15 && java -jar app-jar" ]
     networks:
       - backend
-    restart: always
 
   app:
     build: .
