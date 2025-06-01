@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>am.capstone</groupId>
-	<artifactId>server-naming</artifactId>
+	<artifactId>eureka-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>server-naming</name>
 	<description>Demo project for Spring Boot</description>

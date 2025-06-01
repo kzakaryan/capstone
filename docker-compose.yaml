@@ -35,7 +35,7 @@ services:
 
   eureka-server:
     build:
-      context: ./server-naming
+      context: ./eureka-server
     container_name: eureka-server
     ports:
       - "8761:8761"
