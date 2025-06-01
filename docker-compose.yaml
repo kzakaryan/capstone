@@ -10,7 +10,28 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/project-data
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  config-server:
+    build:
+      context: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/kzakaryan/capstone.git
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCH_PATHS=config-server
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT_LABEL=apiGateway
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_APPLICATION_NAME=config-server
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-server
+    networks:
+      - backend
+    restart: always
 
   eureka-server:
     build:
@@ -19,7 +40,10 @@ services:
     ports:
       - "8761:8761"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=eureka-server
+    networks:
+      - backend
     restart: always
 
   api-gateway:
@@ -29,17 +53,15 @@ services:
     ports:
       - "8765:8765"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
-    restart: always
-
-  config-server:
-    build:
-      context: ./config-server
-    container_name: config-server
-    ports:
-      - "8888:8888"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_APPLICATION_NAME=api-gateway
+    depends_on:
+      - config-server
+      - eureka-server
+    networks:
+      - backend
     restart: always
 
   app:
@@ -48,31 +70,40 @@ services:
     restart: always
     depends_on:
       - postgres
+      - config-server
+      - eureka-server
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
-      SPRING_APPLICATION_NAME: capstone
-    ports: ["8080:8080"]
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_APPLICATION_NAME=capstone
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    ports:
+      - "8080:8080"
     command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+    networks:
+      - backend
 
-  app-instance-2:
-    build: .
-    container_name: my_spring_app_instance_2
-    restart: always
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
-      SPRING_APPLICATION_NAME: capstone
-    ports: ["8081:8081"]
-    command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+#  app-instance-2:
+#    build: .
+#    container_name: my_spring_app_instance_2
+#    restart: always
+#    depends_on:
+#      - postgres
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+#      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+#      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+#      SPRING_APPLICATION_NAME: capstone
+#    ports: ["8081:8081"]
+#    command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+
+networks:
+  backend:
 
 volumes:
   postgres_data:

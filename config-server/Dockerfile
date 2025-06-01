@@ -4,6 +4,11 @@ LABEL authors="kzakaryan"
 
 RUN apk add git openjdk21
 
+USER root
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
+USER 1001
+
 WORKDIR /app
 
 COPY . /app
