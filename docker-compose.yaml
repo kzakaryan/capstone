@@ -24,24 +24,24 @@ services:
       - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/kzakaryan/capstone.git
       - SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCH_PATHS=config-server
       - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT_LABEL=apiGateway
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-config-server:8761/eureka/
       - SPRING_APPLICATION_NAME=config-server
       - SPRING_PROFILES_ACTIVE=docker
     depends_on:
-      - eureka-server
+      - eureka-config-server
     networks:
       - backend
     restart: always
 
-  eureka-server:
+  eureka-config-server:
     build:
-      context: ./eureka-server
-    container_name: eureka-server
+      context: ./eureka-config-server
+    container_name: eureka-config-server
     ports:
       - "8761:8761"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_APPLICATION_NAME=eureka-server
+      - SPRING_APPLICATION_NAME=eureka-config-server
     networks:
       - backend
     restart: always
@@ -55,11 +55,11 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-config-server:8761/eureka/
       - SPRING_APPLICATION_NAME=api-gateway
     depends_on:
       - config-server
-      - eureka-server
+      - eureka-config-server
     command: [ "sh", "-c", "sleep 15 && java -jar app-jar" ]
     networks:
       - backend
@@ -71,7 +71,7 @@ services:
     depends_on:
       - postgres
       - config-server
-      - eureka-server
+      - eureka-config-server
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME}
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
@@ -79,7 +79,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_APPLICATION_NAME=capstone
       - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-config-server:8761/eureka/
     ports:
       - "8080:8080"
     command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]

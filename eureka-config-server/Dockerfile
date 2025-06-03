@@ -9,6 +9,6 @@ WORKDIR /app
 COPY . /app
 
 RUN ./mvnw clean package
-RUN cp target/eureka-server-0.0.1-SNAPSHOT.jar ./app-jar
+RUN cp target/eureka-config-server-0.0.1-SNAPSHOT.jar ./app-jar
 EXPOSE 8761
 ENTRYPOINT ["java", "-jar", "app-jar"]
