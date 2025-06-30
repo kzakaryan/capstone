@@ -10,17 +10,59 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/project-data
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
 
-  eureka-server:
+  config-server:
     build:
-      context: ./server-naming
-    container_name: server-naming
+      context: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/kzakaryan/capstone.git
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCH_PATHS=config-server
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_DEFAULT_LABEL=apiGateway
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-config-server:8761/eureka/
+      - SPRING_APPLICATION_NAME=config-server
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - eureka-config-server
+    networks:
+      - backend
+    restart: always
+
+  eureka-config-server:
+    build:
+      context: ./eureka-config-server
+    container_name: eureka-config-server
     ports:
       - "8761:8761"
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_APPLICATION_NAME=eureka-config-server
+    networks:
+      - backend
     restart: always
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8765:8765"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-config-server:8761/eureka/
+      - SPRING_APPLICATION_NAME=api-gateway
+    depends_on:
+      - config-server
+      - eureka-config-server
+    command: [ "sh", "-c", "sleep 15 && java -jar app-jar" ]
+    networks:
+      - backend
 
   app:
     build: .
@@ -28,31 +70,40 @@ services:
     restart: always
     depends_on:
       - postgres
+      - config-server
+      - eureka-config-server
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
-      SPRING_APPLICATION_NAME: capstone
-    ports: ["8000:8000"]
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${DB_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_APPLICATION_NAME=capstone
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-config-server:8761/eureka/
+    ports:
+      - "8080:8080"
     command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+    networks:
+      - backend
 
-  app-instance-2:
-    build: .
-    container_name: my_spring_app_instance_2
-    restart: always
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
-      SPRING_APPLICATION_NAME: capstone
-    ports: ["8001:8001"]
-    command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+#  app-instance-2:
+#    build: .
+#    container_name: my_spring_app_instance_2
+#    restart: always
+#    depends_on:
+#      - postgres
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+#      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+#      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+#      SPRING_APPLICATION_NAME: capstone
+#    ports: ["8081:8081"]
+#    command: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+
+networks:
+  backend:
 
 volumes:
   postgres_data:
