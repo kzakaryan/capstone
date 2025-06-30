@@ -1,0 +1,680 @@
+openapi: 3.1.0
+info:
+  title: University Management System
+  description: OpenAPI specification for Instructor, Course, Student, Faculty, and Administrator CRUD APIs
+  contact:
+    name: Khachik Z.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:8080
+security:
+  - BasicAuth: []
+  - JwtAuthToken: []
+paths:
+  /instructors:
+    get:
+      tags:
+        - Instructors
+      summary: Get all instructors with pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          description: Page number (0-based)
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Number of records per page
+      responses:
+        '200':
+          description: Paginated list of instructors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Instructor'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
+    post:
+      tags:
+        - Instructors
+      summary: Create an instructor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Instructor'
+      responses:
+        '200':
+          description: Instructor created
+
+  /instructors/{id}:
+    get:
+      tags:
+        - Instructors
+      summary: Get instructor by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Instructor found
+    put:
+      tags:
+        - Instructors
+      summary: Update instructor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Instructor'
+      responses:
+        '200':
+          description: Instructor updated
+    delete:
+      tags:
+        - Instructors
+      summary: Delete instructor
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Instructor deleted
+
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: Get all courses with filtering, sorting, and pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by course name
+        - name: minCredits
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: maxCredits
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Paginated and filtered list of courses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Course'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
+    post:
+      tags:
+        - Courses
+      summary: Create a course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Course created
+
+  /courses/{id}:
+    get:
+      tags:
+        - Courses
+      summary: Get course by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Course found
+    put:
+      tags:
+        - Courses
+      summary: Update course
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        '200':
+          description: Course updated
+    delete:
+      tags:
+        - Courses
+      summary: Delete course
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Course deleted
+
+  /students:
+    get:
+      tags:
+        - Students
+      summary: Get all students with filtering, sorting, and pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          description: Page number (0-based)
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: Number of records per page
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Comma-separated list of sorting fields, e.g., "credits,asc"
+        - name: firstName
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter students by first name (exact match)
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter students whose email contains this value
+        - name: minCredits
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter students with credits greater than or equal to this value
+        - name: maxCredits
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Filter students with credits less than or equal to this value
+      responses:
+        '200':
+          description: Paginated and filtered list of students
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Student'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
+    post:
+      tags:
+        - Students
+      summary: Register a student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Student registered
+
+  /students/{id}:
+    get:
+      tags:
+        - Students
+      summary: Get student by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Student found
+    put:
+      tags:
+        - Students
+      summary: Update student
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        '200':
+          description: Student updated
+    delete:
+      tags:
+        - Students
+      summary: Delete student
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Student deleted
+
+  /faculties:
+    get:
+      tags:
+        - Faculties
+      summary: Get all faculties with pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Paginated list of faculties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Faculty'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
+    post:
+      tags:
+        - Faculties
+      summary: Create a faculty
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        '200':
+          description: Faculty created
+
+  /faculties/{id}:
+    get:
+      tags:
+        - Faculties
+      summary: Get faculty by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Faculty found
+    put:
+      tags:
+        - Faculties
+      summary: Update faculty
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        '200':
+          description: Faculty updated
+    delete:
+      tags:
+        - Faculties
+      summary: Delete faculty
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Faculty deleted
+
+  /administrators:
+    get:
+      tags:
+        - Administrators
+      summary: Get all administrators with pagination
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Paginated list of administrators
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Administrator'
+                  page:
+                    type: integer
+                  size:
+                    type: integer
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  last:
+                    type: boolean
+                  first:
+                    type: boolean
+    post:
+      tags:
+        - Administrators
+      summary: Create an administrator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrator'
+      responses:
+        '200':
+          description: Administrator created
+
+  /administrators/{id}:
+    get:
+      tags:
+        - Administrators
+      summary: Get administrator by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Administrator found
+    put:
+      tags:
+        - Administrators
+      summary: Update administrator
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Administrator'
+      responses:
+        '200':
+          description: Administrator updated
+    delete:
+      tags:
+        - Administrators
+      summary: Delete administrator
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Administrator deleted
+
+components:
+  schemas:
+    securitySchemes:
+      BasicAuth:
+        type: http
+        scheme: basic
+      JwtAuthToken:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+    Instructor:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+      properties:
+        firstName:
+          type: string
+          minLength: 2
+        lastName:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+
+    Course:
+      type: object
+      required:
+        - name
+        - credits
+        - capacity
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        credits:
+          type: integer
+          minimum: 1
+        capacity:
+          type: integer
+          minimum: 1
+
+    Student:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        credits:
+          type: integer
+          default: 0
+
+    Faculty:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+
+    Administrator:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
